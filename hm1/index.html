@@ -17,7 +17,7 @@
     <section class="header">
         <div class="row">
             <div class="col-md-6 text-center">
-                <button class="btn btn-default" id="downloadThenOrderCities">FIRST: Download all cities</button>
+                <button class="btn btn-default" id="downloadThenOrderCities">All downloaded cities</button>
             </div>
             <div class="col-md-6 text-center">
                 <form>
@@ -32,18 +32,23 @@
 
     <section class="workspace">
         <div class="row" >
-            <div class="col-md-6">
+            <div class="col-md-12">
+                <!-- Handlebars injection here -->
                 <ul id="listOfDownloadedCities">
-
-                </ul>
-            </div>
-            <div class="col-md-6">
-                <ul id="listOfLiveSerchedCities">
 
                 </ul>
             </div>
         </div>
     </section>
+
+    <!-- HandlebarsJS Template -->
+    <script type="text/x-handlebars-template" id="allRenderedCities">
+        {{#each list}}
+        <li>
+            {{name}}
+        </li>
+        {{/each}}
+    </script>
 
     <!-- HandlebarsJS -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
