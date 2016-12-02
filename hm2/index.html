@@ -17,7 +17,9 @@
     <section class="header">
         <div class="row">
             <div class="col-md-12 text-center">
-                <button class="btn btn-default" id="downloadThenOrderCities">Download my VK friends</button>
+                <h1 id="headerUserFriendsVK">
+                    <!-- header content insert here -->
+                </h1>
             </div>
         </div>
     </section>
@@ -26,7 +28,7 @@
         <div class="row" >
             <div class="col-md-12">
                 <!-- Handlebars injection here -->
-                <ul id="listOfDownloadedCities">
+                <ul id="listOfDownloadedFriends">
 
                 </ul>
             </div>
@@ -34,13 +36,13 @@
     </section>
 
     <!-- HandlebarsJS Template -->
-    <!-- <script type="text/x-handlebars-template" id="allRenderedCities">
+    <script type="text/x-handlebars-template" id="allRenderedFriends">
         {{#each list}}
         <li>
-            {{name}}
+            {{id}}
         </li>
         {{/each}}
-    </script> -->
+    </script>
 
     <script type"text/javascript" src="https://vk.com/js/api/openapi.js"></script>
     <!-- HandlebarsJS -->

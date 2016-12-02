@@ -18,19 +18,104 @@
 // 3) http://localhost:7777/
 // =============================================================================
 
-VK.init(
-    {
-        apiId: 5757533
-    }
-);
+let vkAppId = 5757533;
+let headerUserFriendsVK = document.getElementById('headerUserFriendsVK');
+let listOfDownloadedFriends = document.getElementById('listOfDownloadedFriends');
+let allRenderedFriends = document.getElementById('allRenderedFriends');
+let VK_ACCESS_FRIENDS = 2;
 
-let loginCallBack = (response) => {
-    console.log(response);
-    if (response.status === 'connected') {
-        console.log('успешная авторизация');
-    } else {
-        console.log('ошибка авторизации');
-    }
-} //loginCallBack
+new Promise(function(resolve) {
+        if (document.readyState === 'complete') {
+            resolve();
+        } else {
+            window.onload = resolve;
+        }
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            VK.init({
+                apiId: vkAppId
+            });
 
-VK.Auth.login(loginCallBack);
+            VK.Auth.login(function(response) {
+                if (response.session) {
+                    resolve(response);
+                } else {
+                    reject(new Error('Не удалось авторизоваться'));
+                }
+            }, VK_ACCESS_FRIENDS);
+        });
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            VK.api('users.get', {'name_case': 'gen'}, function(response) {
+                if (response.error) {
+                    reject(new Error(response.error.error_msg));
+                } else {
+                    headerUserFriendsVK.textContent = `Друзья ${response.response[0].first_name} ${response.response[0].last_name}`;
+                    resolve();
+                }
+            });
+        })
+    })
+    .then(function() {
+        return new Promise(function(resolve, reject) {
+            VK.api('friends.get', {v: '5.8'}, function(serverAnswer) {
+                if (serverAnswer.error) {
+                    reject(new Error(serverAnswer.error.error_msg));
+                } else {
+                    // let tempArrOfObj = [];
+                    // for (let i = 0; i < serverAnswer.response.items.length; i++) {
+                    //     tempArrOfObj[i] = {id: serverAnswer.response.items[i]};
+                    // }
+                    //
+                    // console.log(tempArrOfObj);
+                    // let source = allRenderedFriends.innerHTML;
+                    // let templateFn = Handlebars.compile(source);
+                    // let template = templateFn({ list: tempArrOfObj });
+                    // console.log(template);
+                    // //
+                    // listOfDownloadedFriends.innerHTML = template;
+                    //serverAnswer.response.items
+                    resolve(serverAnswer);
+                }
+            });
+        });
+    })
+    .then( function(serverAnswer) {
+        return new Promise(
+            function(resolve, reject) {
+                VK.api(
+                    'users.get',
+                    {
+                        v: '5.8',
+                        user_ids: serverAnswer.response.items,
+                        fields: 'bdate'
+                    },
+                    function(serverAnswer) {
+                        if (serverAnswer.error) {
+                            reject(new Error(serverAnswer.error.error_msg));
+                        } else {
+                            console.log('serverAnswer', serverAnswer);
+                            // let tempArrOfObj = [];
+                            // for (let i = 0; i < serverAnswer.response.items.length; i++) {
+                            //     tempArrOfObj[i] = {id: serverAnswer.response.items[i]};
+                            // }
+                            //
+                            // console.log(tempArrOfObj);
+                            // let source = allRenderedFriends.innerHTML;
+                            // let templateFn = Handlebars.compile(source);
+                            // let template = templateFn({ list: tempArrOfObj });
+                            // console.log(template);
+                            // //
+                            // listOfDownloadedFriends.innerHTML = template;
+                            //serverAnswer.response.items
+                            resolve();
+                        }
+                });
+            }
+        );
+    })
+    .catch(function(e) {
+        alert(`Ошибка: ${e.message}`);
+    });
