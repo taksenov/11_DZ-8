@@ -24,23 +24,52 @@
         </div>
     </section>
 
-    <section class="workspace">
+<!--     <section class="workspace">
         <div class="row" >
             <div class="col-md-12">
-                <!-- Handlebars injection here -->
+                <!~~ Handlebars injection here ~~>
                 <ul id="listOfDownloadedFriends">
 
                 </ul>
+            </div>
+        </div>
+    </section> -->
+
+    <section class="workspace">
+        <div class="row" >
+            <div class="col-md-5 col-md-offset-1">
+                <!-- Handlebars injection here -->
+                <div class="" id="listOfDownloadedFriends">
+
+                </div>
+            </div>
+            <div class="col-md-6">
+
             </div>
         </div>
     </section>
 
     <!-- HandlebarsJS Template -->
     <script type="text/x-handlebars-template" id="allRenderedFriends">
-        {{#each list}}
-        <li>
-            {{id}}
-        </li>
+        {{#each friendslist}}
+            <div class="row friend_block__design">
+                <div class="col-md-2">
+                    <img src="{{photo_50}}" alt="{{last_name}} {{first_name}}">
+                </div>
+                <div class="col-md-10">
+                    <span class="friend__fullname">
+                        {{last_name}} {{first_name}}
+                    </span>
+                     <br>
+                    <span class="friend__birthdate">
+                        {{bdate}}
+                    </span>
+                    <br>
+                    <span class="friend__id">
+                        id: {{id}}
+                    </span>
+                </div>
+            </div>
         {{/each}}
     </script>
 
